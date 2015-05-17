@@ -22,14 +22,14 @@ app.use(function(req, res, next) {
 })
 
 if (process.env.NODE_ENV === 'production') {
-  console.log('ENTORNO:',process.env.NODE_ENV);
+  console.log('ENTORNO Heroku:',process.env.NODE_ENV);
   var sequelize = new Sequelize(process.env.DATABASE_URL, {
       dialect: "postgres",
       protocol: "postgres"
   });
 }
 else {
-  console.log('ENTORNO:',process.env.NODE_ENV);
+  console.log('ENTORNO Local:',process.env.NODE_ENV);
   var sequelize = new Sequelize('Javier', 'Javier', '', {
       dialect: "postgres",
       port: 5432
@@ -86,8 +86,8 @@ app.post('/save', function(req, res) {
       usuario: 'Javier', 
       color: randColor, 
       row: rowSize, 
-      column: columnSize, 
-      posicion: 'segundo'})
+      column: columnSize 
+      })
 })
 
 app.get('/servicios', function(req, res) {
@@ -106,9 +106,9 @@ app.post('/servicioId', function(req, res) {
     })
 })
 
-app.get('/users', function(req, res) {
-    User.findAll().then(function(users){
-       res.send(users)
+app.get('/usuarios', function(req, res) {
+  User.findAll().then(function(usuarios){
+       res.send(usuarios)
     })
 })
 
@@ -120,7 +120,6 @@ var Servicio = sequelize.define('servicio', {
   categoria: { type: Sequelize.STRING, field: 'categoria' },
   ofertaDemanda: { type: Sequelize.STRING, field: 'ofertaDemanda' },
   codigoPostal: { type: Sequelize.INTEGER, field: 'codigoPostal' },
-  //usuario: { type: Sequelize.STRING, field: 'usuario' },
   row: { type: Sequelize.INTEGER, field: 'row'},
   column: { type: Sequelize.INTEGER, field: 'column'},
   contacto: { type: Sequelize.STRING, field: 'contacto' }
@@ -129,14 +128,16 @@ var Servicio = sequelize.define('servicio', {
   freezeTableName: true // Model tableName will be the same as the model name
 })
 
+  //usuario: { type: Sequelize.STRING, field: 'usuario' },
+
+
 var User = sequelize.define('user', {
   usuario: {
     type: Sequelize.STRING,
-    field: 'usuario', // Will result in an attribute that is firstName when user facing but first_name in the database
+    field: 'usuario', // Will result in an attribute that is firstName when usuario facing but first_name in the database
     primaryKey: true
   },
   nombre: { type: Sequelize.STRING, field: 'nombre' },
-  descripcion: { type: Sequelize.STRING, field: 'descripcion' },
   apellidos: { type: Sequelize.STRING, field: 'apellidos' },
   direccion: { type: Sequelize.STRING, field: 'direccion'},
   codigoPostal: { type: Sequelize.INTEGER, field: 'codigoPostal' },
@@ -160,8 +161,8 @@ var Categoria = sequelize.define('categoria', {
 });
 
 var Alerta = sequelize.define('alerta', {
-  usuario: { type: Sequelize.STRING, field: 'categoria'},
-  categoria: { type: Sequelize.STRING, field: 'descripcion' },
+  usuario: { type: Sequelize.STRING, field: 'usuario'},
+  categoria: { type: Sequelize.STRING, field: 'categoria' },
   ofertaDemanda: { type: Sequelize.STRING, field: 'ofertaDemanda' },
   codigoPostal: { type: Sequelize.INTEGER, field: 'codigoPostal' },
   },
@@ -172,16 +173,71 @@ var Alerta = sequelize.define('alerta', {
 
 Servicio.belongsTo(User,{foreignKey: 'usuario'});
 Servicio.belongsTo(Categoria,{foreignKey: 'categoria'});
-Alerta.belongsTo(User,{foreignKey: 'usuario'});
-Alerta.belongsTo(Categoria,{foreignKey: 'categoria'});
+//Alerta.belongsTo(Usuario,{foreignKey: 'usuario'});
+//Alerta.belongsTo(Categoria,{foreignKey: 'categoria'});
 
 //True fuerza la sincronizacion de la base de datos, si no es
 //igual se borra todo el contido DROP Y CREATE TABLE
 var DB = false
 Categoria.sync({force: DB})
-User.sync({force: DB})
 Servicio.sync({force: DB})
+User.sync({force: DB})
 Alerta.sync({force: DB})
 //https://serviciomania.herokuapp.com/ | https://git.heroku.com/serviciomania.git
+
+
+app.get('/cargarDB', function(req, res) {
+    console.log('Se invoca cargarDB');
+
+    Categoria.create({ 
+      categoria: 'Transporte',
+      descripcion:'',
+      color:'darkBlue'
+    })
+
+    Categoria.create({ 
+      categoria: 'Clases',
+      descripcion:'',
+      color:'lightPurple'
+    })
+
+    Categoria.create({ 
+      categoria: 'Recados',
+      descripcion:'',
+      color:'red'
+    })
+
+    Categoria.create({ 
+      categoria: 'Asesoria',
+      descripcion:'',
+      color:'green'
+    })
+
+    Categoria.create({ 
+      categoria: 'Otros',
+      descripcion:'',
+      color:'green'
+    }) 
+
+    User.create({ 
+      usuario: 'Javier',
+      nombre: 'Javier',
+      apellidos: 'Portabales' ,
+      direccion: 'Querol' ,
+      codigoPostal: '28033' ,
+      fechaNacimiento: '1987/05/26' ,
+      email: 'micorreo@gmail.com' ,
+      contacto: '912 738 23 45'
+    })
+    console.log('CargarDB carga BASE DE DATOS');
+    res.end("<h1>Base de datos Cargada</h1>");
+})
+
+
+
+
+
+
+
 
 
