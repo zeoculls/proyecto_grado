@@ -39,10 +39,10 @@ angular.module('recadoMania').config(["$routeProvider", function($routeProvider)
 
 
 
-//angular.module('recadoMania')
-//    .constant('API_URL', 'https://recadomania.herokuapp.com/');
 angular.module('recadoMania')
-    .constant('API_URL', 'http://127.0.0.1:4000/');
+    .constant('API_URL', 'https://serviciomania.herokuapp.com/');
+//angular.module('recadoMania')
+//    .constant('API_URL', 'http://127.0.0.1:4000/');
 //angular.module('recadoMania')
 //    .constant('API_URL', 'http://192.168.0.159:4000/');
 
