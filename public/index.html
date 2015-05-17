@@ -1,0 +1,43 @@
+
+<html>
+<head>
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="styles/bootstrap.superhero.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="/bower_components/toastr/toastr.css">
+</head>
+<body ng-app="recadoMania">
+
+
+     <div class="container">
+      <div class="header">
+        <h2>RECADOMANIA</h2>
+        <ul class="nav nav-pills pull-right">
+          <li><a ng-href="#/main">LISTAR SERVICIOS</a></li>
+          <li><a href="#/crearservicio">CREAR SERVICIO</a></li>
+          <li><a ng-href="#/buscar">BUSCAR SERVICIO</a></li>
+          <li><a ng-href="#/registrar">REGISTRARSE</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- Las paginas parciales se cargan aquí angular-route -->
+    <div ng-view></div>                        
+
+<!-- libraries -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/toastr/toastr.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/bower_components/angular-aria/angular-aria.js"></script>
+    <script src="/bower_components/angular-material/angular-material.js"></script>
+<!-- scripts -->
+    <script src="js/app.config.js"></script>
+    <script src="js/crearServicioCtrl.js"></script>
+    <script src="js/serviciosCtrl.js"></script>
+    <script src="js/servicioSrvc.js"></script>
+
+</body>
+    
+</html>

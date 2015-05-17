@@ -1,0 +1,26 @@
+{
+  "name": "serviciomania",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "postinstall": "./node_modules/bower/bin/bower install",
+    "prestart": "npm install --production"
+  },
+  "author": "Javier Portabales",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.12.4",
+    "bower": "^1.4.1",
+    "ejs": "^2.3.1",
+    "express": "^4.12.3",
+    "path": "^0.11.14",
+    "pg": "^4.3.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^2.1.3"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}

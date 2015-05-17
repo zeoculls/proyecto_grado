@@ -1,0 +1,134 @@
+<!--  <div class="container">
+      <div class="row">
+        <div class="col-md-11">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <span class="glyphicon glyphicon-bookmark"></span>
+
+ Categorias mas comunes</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row" layout="row" layout-align="space-between center">
+                <a href="#" class="btn btn-danger btn-lg" role="button">
+                  <span class="glyphicon glyphicon-list-alt"></span>
+                  <br />Tecnologia
+              </a>
+                <a href="#" class="btn btn-warning btn-lg" role="button">
+                  <span class="glyphicon glyphicon-bookmark"></span>
+                  <br />Asesoria</a>
+                <a href="#" class="btn btn-primary btn-lg" role="button">
+                  <span class="glyphicon glyphicon-signal"></span>
+                  <br />Finanzas</a>
+                <a href="#" class="btn btn-primary btn-lg" role="button">
+                  <span class="glyphicon glyphicon-comment"></span>
+                  <br />Social</a>
+                <a href="#" class="btn btn-success btn-lg" role="button">
+                  <span class="glyphicon glyphicon-user"></span>
+                  <br />Fitness</a>
+                <a href="#" class="btn btn-info btn-lg" role="button">
+                  <span class="glyphicon glyphicon-file"></span>
+                  <br />Classes</a>
+                <a href="#" class="btn btn-primary btn-lg" role="button">
+                  <span class="glyphicon glyphicon-picture"></span>
+                  <br />Fotos</a>
+                <a href="#" class="btn btn-primary btn-lg" role="button">
+                  <span class="glyphicon glyphicon-tag"></span>
+                  <br />Shopping</a>
+              </div>
+              <div layout="row" layout-margin layout-padding>
+              <a class="btn btn-success btn-lg btn-block" role="button">
+                <span class="glyphicon glyphicon-globe"></span>
+                Mostrar todas</a>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  -->
+
+    
+
+
+   <div>
+  <md-grid-list
+        md-cols-sm="1" md-cols-md="2" md-cols-gt-md="5"
+        md-row-height-gt-md="1:1" md-row-height="2:2"
+        md-gutter="12px" md-gutter-gt-sm="8px" >
+    <md-grid-tile ng-repeat="servicio in servicios"
+        md-rowspan="{{servicio.row}}" md-colspan="{{servicio.column}}" md-colspan-sm="3" >
+       <!--  <p><strong>Fecha creado: </strong></p> -->
+       <div layout="column" layout-align="start start">
+        {{servicio.updatedAt | date:'mediumDate'}}
+        <p><strong>Description: </strong></p>
+        <p> {{servicio.descripcion}} </p>
+      <!--   <p><strong>Categorias: </strong></p> -->
+            <p><span class="tags"> {{servicio.categoria}} </span></p>
+          </div>
+      <md-grid-tile-footer>
+        <h3>{{servicio.titulo}}</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+  </md-grid-list>
+</div>
+
+
+
+
+    
+ <!--    
+  <div class="container" ng-repeat="servicio in servicios">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+         <div class="well profile">
+            <div class="col-sm-12">
+                <div class="col-xs-12 col-sm-8">
+                    <h2>{{servicio.titulo}}</h2>
+                    <p><strong>Fecha creado: </strong> {{servicio.updatedAt}} </p>
+                    <p><strong>Description: </strong> {{servicio.descripcion}}</p>
+                    <p><strong>Categorias: </strong>
+                        <span class="tags">{{servicio.grupo}}</span>
+                    </p>
+                </div>             
+                <div class="col-xs-12 col-sm-4 text-center">
+                    <figure>
+                        <img src="http://www.localcrimenews.com/wp-content/uploads/2013/07/default-user-icon-profile.png" alt="" class="img-circle img-responsive">
+                    </figure>
+                     <p><strong>Usuario: </strong> {{servicio.usuario}} </p>
+                </div>
+            </div>            
+            <div class="col-xs-12 divider text-center">
+                <div class="col-xs-12 col-sm-4 emphasis">
+                    <h2><strong> {{servicio.precio}} </strong></h2>                    
+                    <p><small>Precio</small></p>
+                    <button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Contraoferta </button>
+                </div>
+                <div class="col-xs-12 col-sm-4 emphasis">
+                    <h2><strong>{{servicio.ofertaDemanda}}</strong></h2>                    
+                    <p><small>O/D</small></p>
+                    <button class="btn btn-info btn-block"><span class="fa fa-user"></span> Me ofrezco </button>
+                </div>
+                <div class="col-xs-12 col-sm-4 emphasis">
+                    <h2><strong>{{servicio.codigoPostal}}</strong></h2>                    
+                    <p><small>Codigo Postal</small></p>
+                    <div class="btn-group dropup btn-block">
+                      <button type="button" class="btn btn-primary"><span class="fa fa-gear"></span> Mas Opciones </button>
+                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu text-left" role="menu">
+                        <li><a href="#"><span class="fa fa-envelope pull-right"></span> Send an email </a></li>
+                        <li><a href="#"><span class="fa fa-list pull-right"></span> Add or remove from a list  </a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><span class="fa fa-warning pull-right"></span>Report this user for spam</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#" class="btn disabled" role="button"> Unfollow </a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+         </div>                 
+        </div>
+    </div>
+</div>

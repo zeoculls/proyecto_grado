@@ -1,0 +1,71 @@
+
+<br>
+
+<form class="form-horizontal">
+  <fieldset>
+    <legend>Crear Servicio</legend>
+ 
+    <div class="form-group">
+      <label class="col-lg-2 control-label">Nombre</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="nombreServicio" placeholder="Nombre del Servicio" ng-model="servicio.title">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> He leido y acepto terms & conditions
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="textArea" class="col-lg-2 control-label">Descripcion</label>
+      <div class="col-lg-10">
+        <textarea class="form-control" rows="3" id="descriptionServicio" ng-model="servicio.descripcion"></textarea>
+        <span class="help-block">Por favor anade aqui la description del servicio que necesitas.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-2 control-label">Oferta Vs Demanda</label>
+      <div class="col-lg-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios1" value="oferta" checked="" ng-model="servicio.oferta">
+            Yo soy el usuario que oferta realizar el servicio y por lo tanto ser remunerado por ello.
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios2" value="demanda" ng-model="servicio.demanda">
+            Yo soy el usuario que demanda recibir el servicio y estoy dispuesto a pagar por ello.
+          </label>
+        </div>
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label for="select" class="col-lg-2 control-label">Precio</label>
+      <div class="col-lg-10">
+        <select class="form-control" id="select" ng-model="servicio.precio">
+          <option>0-5 euros</option>
+          <option>5-20 euros</option>
+          <option>20-100 euros</option>
+          <option>100-200 euros</option>
+          <option>+200 euros</option>
+        </select>
+        <br>
+        <select multiple="" class="form-control" ng-model="servicio.categorias">
+          <option>Transporte</option>
+          <option>Clases</option>
+          <option>Asesoria</option>
+          <option>Reparaciones</option>
+          <option>Otros</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-10 col-md-offset-2">
+        <button type="reset" class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary" ng-click="submit()">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

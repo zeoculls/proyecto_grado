@@ -1,0 +1,39 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8">
+      Que quieres buscar: 
+      <input size="40" ng-model="query" placeholder="Busqueda rapida" autofocus>
+      <label class="formgroup">Filtrar por: 
+        <select ng-model="filterOferta"> 
+          <option value="oferta">Oferta</option>
+          <option value="demanda">Demanda</option>
+          <option value="">Todo</option>
+        </select>
+      </label>
+   </div>
+  </div>
+</div>
+
+        <md-grid-list
+              md-cols-sm="1" md-cols-md="2" md-cols-gt-md="4"
+              md-row-height-gt-md="1:1" md-row-height="2:2"
+              md-gutter="14px" md-gutter-gt-sm="8px" >
+          <!-- mirar como va animate ng-show="query" -->
+          <md-grid-tile ng-animate="'animate'" class="{{servicio.color}}" ng-repeat="servicio in servicios | filter:query | filter:filterOferta"
+              md-rowspan="1" md-colspan="{{servicio.column}}" md-colspan-sm="1" >
+             <div layout="column" style="color:black;" layout-align="start start">
+                <a href="#/detalle/{{servicio.id}}" style="color:black;">
+<!--   <a href="#/detalle/{{servicios.indexOf(servicio)}}"> -->   
+                <h3><strong>{{servicio.titulo}}</strong></h3></a>
+                <p><strong>Description: </strong></p>
+                <p> {{servicio.descripcion}} </p>
+                <p><strong> {{servicio.precio}} € </strong></p>
+                <p><span class="tags"> <strong>{{servicio.categoria}} </span></strong></p>
+              </div>
+            <md-grid-tile-footer>
+                  <h3> {{servicio.updatedAt | date:'mediumDate'}} <h3>
+            </md-grid-tile-footer>
+          </md-grid-tile>
+        </md-grid-list>
+
+

@@ -1,0 +1,76 @@
+<br>
+    <fieldset>
+      <legend> Crear Servicio</legend>
+      </fieldset>
+
+<div class="container">
+   <form class="form-horizontal">
+      <div class="form-group">
+        <label class="col-md-2 control-label">Titulo</label>
+        <div class="col-md-4" "col-xs-6" "col-xs-2">
+          <input type="text" class="form-control" id="nombreServicio" placeholder="Nombre del Servicio" ng-model="servicio.title">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> He leido y acepto las condiciones
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="textArea" class="col-md-2 control-label">Descripcion</label>
+        <div class="col-md-6">
+          <textarea class="form-control" rows="3" id="descriptionServicio" placeholder="Describe brevemente lo que necesitas" ng-model="servicio.descripcion"></textarea>
+         <!--  <span class="help-block">Por favor anade aqui la description del servicio que necesitas.</span> -->
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 control-label">Oferta o Demanda</label>
+        <div class="col-md-6">
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="optionsRadios1" value="oferta" checked="" ng-model="servicio.oferta">
+              Yo soy el usuario que oferta realizar el servicio y por lo tanto ser remunerado por ello.
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="optionsRadios2" value="demanda" ng-model="servicio.oferta">
+              Yo soy el usuario que demanda recibir el servicio y estoy dispuesto a pagar por ello.
+            </label>
+          </div>
+        </div>
+      </div>
+
+       <div class="form-group">
+        <label for="precio" class="col-md-2 control-label">Precio</label>
+          <div class="col-md-2" "col-xs-2">
+            <input type="text " class="form-control" maxlength="4" style="text-align:right; font-size:22px; font-weight: bold;" id="precio" placeholder="€" ng-model="servicio.precio">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="categoria" class="col-md-2 control-label">Categoria</label>
+          <div class="col-md-2">
+
+          <select class="form-control" ng-model="servicio.categorias">
+            <option>Transporte</option>
+            <option>Clases</option>
+            <option>Asesoria</option>
+            <option>Reparaciones</option>
+            <option>Otros</option>
+          </select>
+          </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-group">
+
+        <div class="col-lg-10" align="center">
+          <p id="errorMessage"><span></span></p>
+          <button type="reset" class="btn btn-default">Cancel</button>
+          <button id="submit" type="submit" class="btn btn-primary" ng-click="submit()">Submit</button>
+        </div>
+      </div>
+  </form>
+
+</div> <!-- End of container -->

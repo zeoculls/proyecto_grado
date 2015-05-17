@@ -1,0 +1,31 @@
+<md-dialog>
+<md-toolbar class="md-warn">
+    <div class="md-toolbar-tools">
+      <span class="md-flex">Confirma que el servicio es correcto</span>
+    </div>
+  </md-toolbar>
+    <md-content class="md-padding md-margin">
+      <p style="color:black; font-size: 1.3em">{{servicio.title}}</p>
+      <p style="color:black">Description:</p>
+      <p style="color:black">{{servicio.descripcion}}</p>
+      <p style="color:black">El precio del servicio es {{servicio.precio}}</p>
+      <p style="color:black">Categorizado en:</p>
+      <div class="badge" style="text-align: center">
+      <p style="text-align: center"><strong>{{servicio.categorias}}</strong></p> </div> 
+<!-- <div layout="row" layout-align="space-around center">
+      <div ng-repeat="categoria in servicio.categorias"> 
+        <div class="badge">{{categorias}}</div>
+   </div>
+  </div>  -->
+    </md-content>
+
+    <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button class="md-primary" ng-click="cancel()">
+     Editar
+    </md-button>
+    <md-button class="md-primary" ng-click="answer('submit')" class="md-warn">
+      Confirmar
+    </md-button>
+    </div>
+</md-dialog>
