@@ -54,13 +54,3 @@ toastr.options = {
   "hideMethod": "fadeOut"
 }
 
-
-
-
-angular.module('recadoMania').controller('usuarioCtrl',['$scope', function($scope) {
-
-$scope.usuario = 'Hola';
-    console.log('controller usuario',$scope.usuario);
-
-
-}

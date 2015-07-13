@@ -21,7 +21,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //app.use(session({secret: 'servicios'}));  
-app.use('/#/users',users);
+app.use('/users',users);
 app.use('/auth',auth);
 
 passport.serializeUser(function(user,done){
@@ -51,8 +51,8 @@ passport.use(new GoogleStrategy({
 
 console.log('process.env.DATABASE_URL',process.env.DATABASE_URL);
 
-
-
+//postgres://acrrjblbhykwfe:_X9x_X1PudqZVLkPrYPOdowl9c@ec2-107-20-152-139.compute-1.amazonaws.com:5432/ddh92n17nf7m9p
+//Pass: _X9x_X1PudqZVLkPrYPOdowl9c
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');

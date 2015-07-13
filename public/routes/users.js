@@ -3,8 +3,9 @@ var router = express.Router();
 
 
 
-router.get('#/users', function(req,res){ 
+router.get('/users', function(req,res){ 
 	console.log('logueado ok');
+	
 	var usuario = { 
       nombre: req.user.displayName, 
       fotoAvatar: req.user._json.image.url

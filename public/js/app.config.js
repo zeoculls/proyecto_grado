@@ -30,14 +30,9 @@ angular.module('recadoMania').config(["$routeProvider", function($routeProvider)
         controller: 'crearUsuarioCtrl'
     })
 
-    .when('/users', {
-        templateUrl: 'partials/login.html'
-        controller: 'usuarioCtrl'
-    })
-
-    .otherwise({
-        redirectTo: '/main'
-    })
+    //.otherwise({
+    //    redirectTo: '/main'
+    //})
 
 
 }]);
