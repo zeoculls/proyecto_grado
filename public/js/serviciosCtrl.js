@@ -16,6 +16,8 @@ angular.module('recadoMania').controller('BuscarServicios',['$scope', 'servicioS
 }])
 
 
+
+
 angular.module('recadoMania').controller('DetalleCtrl',['$scope', 'servicioSrvc', '$routeParams',  function($scope, servicioSrvc, $routeParams) {
     //controlador que maneja el partial detalle
     //recoge de la URL el numero ID para poder

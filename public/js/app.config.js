@@ -25,24 +25,30 @@ angular.module('recadoMania').config(["$routeProvider", function($routeProvider)
         controller: 'BuscarServicios'
     })
 
-
     .when('/registrar', {
-        templateUrl: 'partials/registrar.html'
+        templateUrl: 'partials/registrar.html',
+        controller: 'crearUsuarioCtrl'
+    })
+
+    .when('/users', {
+        templateUrl: 'partials/login.html'
+        controller: 'usuarioCtrl'
     })
 
     .otherwise({
         redirectTo: '/main'
     })
 
+
 }]);
 
 
 
 
-angular.module('recadoMania')
-    .constant('API_URL', 'https://serviciomania.herokuapp.com/');
 //angular.module('recadoMania')
-//    .constant('API_URL', 'http://127.0.0.1:4000/');
+//    .constant('API_URL', 'https://serviciomania.herokuapp.com/');
+angular.module('recadoMania')
+    .constant('API_URL', 'http://127.0.0.1:4000/');
 //angular.module('recadoMania')
 //    .constant('API_URL', 'http://192.168.0.159:4000/');
 

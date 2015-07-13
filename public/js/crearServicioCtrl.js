@@ -51,7 +51,7 @@ angular.module('recadoMania').controller('crearServicioCtrl',['$scope', 'servici
                 $window.location.href = '#/main'  
             
         }, function() {
-        console.log('You cancelled the dialog.');
+        console.log('Has cancelado el dialogo.');
     });
 
       }

@@ -1,17 +1,16 @@
 <md-dialog>
 <md-toolbar class="md-warn">
     <div class="md-toolbar-tools">
-      <span class="md-flex">Confirma que el servicio es correcto</span>
+      <span class="md-flex">Confirma que los datos son correctos</span>
     </div>
   </md-toolbar>
     <md-content class="md-padding md-margin">
-      <p style="color:black; font-size: 1.3em">{{servicio.title}}</p>
-      <p style="color:black">Description:</p>
-      <p style="color:black">{{servicio.descripcion}}</p>
-      <p style="color:black">El precio del servicio es {{servicio.precio}}</p>
-      <p style="color:black">Categorizado en:</p>
+      <p style="color:black; font-size: 1.3em">{{usuario.usuario}}</p>
+      <p style="color:black">Nombre {{usuario.nombre}}</p>
+      <p style="color:black">Email {{usuario.email}}</p>
+      <p style="color:black">C.P::</p>
       <div class="badge" style="text-align: center">
-      <p style="text-align: center"><strong>{{servicio.categorias}}</strong></p> </div> 
+      <p style="text-align: center"><strong>{{usuario.codigoPostal}}</strong></p> </div> 
 <!-- <div layout="row" layout-align="space-around center">
       <div ng-repeat="categoria in servicio.categorias"> 
         <div class="badge">{{categorias}}</div>

@@ -58,16 +58,19 @@
     <md-grid-tile ng-repeat="servicio in servicios"
         md-rowspan="{{servicio.row}}" md-colspan="{{servicio.column}}" md-colspan-sm="3" >
        <!--  <p><strong>Fecha creado: </strong></p> -->
-       <div layout="column" layout-align="start start">
-        {{servicio.updatedAt | date:'mediumDate'}}
-        <p><strong>Description: </strong></p>
-        <p> {{servicio.descripcion}} </p>
+       <div layout="column" layout-margin layout-align="start start">
+          <md-grid-tile-header>
+              <h3>{{servicio.titulo}}</h3>
+          </md-grid-tile-header>
+
+          <p><strong>Descripción: </strong></p>
+          <p> {{servicio.descripcion}} </p>
       <!--   <p><strong>Categorias: </strong></p> -->
-            <p><span class="tags"> {{servicio.categoria}} </span></p>
+          <p><span class="tags"> {{servicio.categoria}} </span></p>
           </div>
-      <md-grid-tile-footer>
-        <h3>{{servicio.titulo}}</h3>
-      </md-grid-tile-footer>
+          <md-grid-tile-footer>
+              <h3>Publicado: {{servicio.updatedAt | date:'mediumDate'}}</h3>
+          </md-grid-tile-footer>
     </md-grid-tile>
   </md-grid-list>
 </div>

@@ -2,7 +2,7 @@ angular.module('recadoMania').factory('servicioSrvc',['$http', '$q', 'API_URL', 
 
     var saveURL = API_URL + 'save';
     var getURL = API_URL + 'servicios';
-            var getID = API_URL + 'servicioId';
+    var getID = API_URL + 'servicioId';
 
     //guarda un servicio y recupera todos.
     return {

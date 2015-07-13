@@ -1,9 +1,14 @@
 var express = require("express");
-var bodyParser = require("body-parser")
-var Sequelize = require('sequelize')
-var path = require('path')
+var bodyParser = require("body-parser");
+var Sequelize = require('sequelize');
+var path = require('path');
 var app = express();
+var passport = require('passport');
+var session = require('express-session');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;  
 
+var auth = require('./public/routes/auth.js');
+var users = require('./public/routes/users.js');
 
 var PORT = process.env.PORT || 4000
 app.engine('html', require('ejs').renderFile);
@@ -12,7 +17,41 @@ app.set('views', __dirname + '/public/partials');
 app.use(express.static(path.join(__dirname + '/public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+//app.use(session({secret: 'servicios'}));  
+app.use('/#/users',users);
+app.use('/auth',auth);
+
+passport.serializeUser(function(user,done){
+    done(null, user);
+
+});
+
+passport.deserializeUser(function(user ,done){
+  done(null, user);
+
+});
+
+passport.use(new GoogleStrategy({
+  clientID: '514182895063-jmjal17a7d5dgth23tof34t06sq4aohf.apps.googleusercontent.com',
+  clientSecret: 'SQygJWZKcgnJ1cyD0M_cAliJ',
+  callbackURL: 'http://localhost:4000/auth/google/callback'
+  },
+  //returnURL: 'http://localhost:4000/auth/google/callback'},
+  function(req, accessToken, profile, done) {
+    done(null, profile);
+  }
+));
+
+
+
+
+
 console.log('process.env.DATABASE_URL',process.env.DATABASE_URL);
+
+
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -30,7 +69,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 else {
   console.log('ENTORNO Local:',process.env.NODE_ENV);
-  var sequelize = new Sequelize('Javier', 'Javier', '', {
+  var sequelize = new Sequelize('Javi', 'Javi', '', {
       dialect: "postgres",
       port: 5432
   });
@@ -42,9 +81,24 @@ app.listen(PORT,function(){
   
 })
 
+
+app.post('/nuevoUsuario', function(req, res) {
+    console.log('Usuario',req.body);
+    Usuario.create({ 
+      usuario: req.body.usuario, 
+      nombre: req.body.nombre, 
+      apellidos: req.body.apellidos, 
+      direccion: req.body.direccion, 
+      codigoPostal: req.body.codigoPostal, 
+      fechaNacimiento: req.body.fechaNacimiento, 
+      email: req.body.email, 
+      contacto: req.body.contacto
+      })
+})
+
 app.post('/save', function(req, res) {
     console.log('recado',req.body);
-    console.log('recado precio',req.body.precio);
+    console.log('recado owner',req.body.owner);
     var rowSize, columnSize;
     var colors = ["green",
             "darkBlue",
@@ -59,21 +113,21 @@ app.post('/save', function(req, res) {
 
     var randColor = colors[Math.floor((Math.random() * 10))];
     console.log('Precio', req.body.precio);
-    if(req.body.precio < 20) {
-        rowSize = 1;
-        columnSize = 2;
-    }
-    if(req.body.precio > 20 &&  req.body.precio < 50) {
+    if(req.body.precio <= 20) {
         rowSize = 2;
-        columnSize = 2;
+        columnSize = 3;
+    }
+    if(req.body.precio > 20 &&  req.body.precio <= 50) {
+        rowSize = 2;
+        columnSize = 3;
     }
     if(req.body.precio > 50 &&  req.body.precio < 100) {
-        rowSize = 3;
+        rowSize = 2;
         columnSize = 3;
     }
     if(req.body.precio > 100)
         {
-        rowSize = 3;
+        rowSize = 2;
         columnSize = 3;
     }
     Servicio.create({ 
@@ -83,10 +137,10 @@ app.post('/save', function(req, res) {
       categoria: req.body.categorias, 
       ofertaDemanda: req.body.oferta, 
       codigoPostal: '28033', 
-      usuario: 'Javier', 
       color: randColor, 
       row: rowSize, 
-      column: columnSize 
+      column: columnSize, 
+      owner: req.body.owner
       })
 })
 
@@ -107,7 +161,7 @@ app.post('/servicioId', function(req, res) {
 })
 
 app.get('/usuarios', function(req, res) {
-  User.findAll().then(function(usuarios){
+  Usuario.findAll().then(function(usuarios){
        res.send(usuarios)
     })
 })
@@ -128,15 +182,9 @@ var Servicio = sequelize.define('servicio', {
   freezeTableName: true // Model tableName will be the same as the model name
 })
 
-  //usuario: { type: Sequelize.STRING, field: 'usuario' },
 
-
-var User = sequelize.define('user', {
-  usuario: {
-    type: Sequelize.STRING,
-    field: 'usuario', // Will result in an attribute that is firstName when usuario facing but first_name in the database
-    primaryKey: true
-  },
+var Usuario = sequelize.define('usuario', {
+  usuario: { type: Sequelize.STRING, field: 'usuario', primaryKey: true },
   nombre: { type: Sequelize.STRING, field: 'nombre' },
   apellidos: { type: Sequelize.STRING, field: 'apellidos' },
   direccion: { type: Sequelize.STRING, field: 'direccion'},
@@ -144,7 +192,6 @@ var User = sequelize.define('user', {
   fechaNacimiento: { type: Sequelize.DATE, field: 'fechaNacimiento' },
   email: { type: Sequelize.STRING, field: 'email'},
   contacto: { type: Sequelize.STRING, field: 'contacto'},
-
   fotoAvatar: { type: Sequelize.STRING, field: 'fotoAvatar'},
 }, {
   freezeTableName: true 
@@ -161,8 +208,9 @@ var Categoria = sequelize.define('categoria', {
 });
 
 var Alerta = sequelize.define('alerta', {
-  usuario: { type: Sequelize.STRING, field: 'usuario'},
+  //usuario: { type: Sequelize.STRING, field: 'usuario'},
   categoria: { type: Sequelize.STRING, field: 'categoria' },
+  alerta: { type: Sequelize.STRING, field: 'alerta', primaryKey: true},
   ofertaDemanda: { type: Sequelize.STRING, field: 'ofertaDemanda' },
   codigoPostal: { type: Sequelize.INTEGER, field: 'codigoPostal' },
   },
@@ -171,9 +219,9 @@ var Alerta = sequelize.define('alerta', {
 });
 
 
-Servicio.belongsTo(User,{foreignKey: 'usuario'});
+Servicio.belongsTo(Usuario,{foreignKey: 'owner'});
 Servicio.belongsTo(Categoria,{foreignKey: 'categoria'});
-//Alerta.belongsTo(Usuario,{foreignKey: 'usuario'});
+//Alerta.belongsTo(Usuario,{foreignKey: 'owner'});
 //Alerta.belongsTo(Categoria,{foreignKey: 'categoria'});
 
 //True fuerza la sincronizacion de la base de datos, si no es
@@ -181,10 +229,17 @@ Servicio.belongsTo(Categoria,{foreignKey: 'categoria'});
 var DB = false
 Categoria.sync({force: DB})
 Servicio.sync({force: DB})
-User.sync({force: DB})
+Usuario.sync({force: DB})
 Alerta.sync({force: DB})
 //https://serviciomania.herokuapp.com/ | https://git.heroku.com/serviciomania.git
 
+
+app.get('/borrarDB', function(req, res) {
+    console.log('Se invoca borrarDB');
+    sequelize.dropAllTables();
+    console.log('BorrarDB elimina BASE DE DATOS');
+    res.end("<h1>Base de datos BORRADA</h1>");
+})    
 
 app.get('/cargarDB', function(req, res) {
     console.log('Se invoca cargarDB');
@@ -208,6 +263,12 @@ app.get('/cargarDB', function(req, res) {
     })
 
     Categoria.create({ 
+      categoria: 'Reparaciones',
+      descripcion:'',
+      color:'yellow'
+    })
+
+    Categoria.create({ 
       categoria: 'Asesoria',
       descripcion:'',
       color:'green'
@@ -219,7 +280,7 @@ app.get('/cargarDB', function(req, res) {
       color:'green'
     }) 
 
-    User.create({ 
+    Usuario.create({ 
       usuario: 'Javier',
       nombre: 'Javier',
       apellidos: 'Portabales' ,
