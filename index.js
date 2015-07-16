@@ -6,6 +6,7 @@ var app = express();
 var passport = require('passport');
 var session = require('express-session');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;  
+var cookieParser = require('cookie-parser');
 
 var auth = require('./public/routes/auth.js');
 var users = require('./public/routes/users.js');
@@ -19,28 +20,38 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+//app.use(cookieParser());
+//app.use(express.cookieSession({ secret: 'tobo!', maxAge: 360*5 }));
 
-//app.use(session({secret: 'servicios'}));  
+app.use(session({secret: 'secret', 
+                 saveUninitialized: true,
+                 resave: true}));
+
 app.use('/users',users);
 app.use('/auth',auth);
 
-passport.serializeUser(function(user,done){
-    done(null, user);
 
+// Simple route middleware to ensure user is authenticated.
+
+passport.serializeUser(function(user, done){
+    console.log('SEIRALIZE USER', user.id);
+//    console.log('id:', user.id);    
+    return done(null, user.id);
 });
 
 passport.deserializeUser(function(user ,done){
-  done(null, user);
-
+    console.log('DESEIRALIZE USER!:', user.id);
+    done(null, user.id);
 });
 
 passport.use(new GoogleStrategy({
   clientID: '514182895063-jmjal17a7d5dgth23tof34t06sq4aohf.apps.googleusercontent.com',
   clientSecret: 'SQygJWZKcgnJ1cyD0M_cAliJ',
-  callbackURL: 'http://localhost:4000/auth/google/callback'
+  returnURL: 'http://127.0.0.1:4000/auth/google/callback',
+  callbackURL: 'http://localhost:4000/auth/google/callback',
   },
-  //returnURL: 'http://localhost:4000/auth/google/callback'},
-  function(req, accessToken, profile, done) {
+  function(req, accessToken, refreshToken, profile, done) {
+    console.log('GoogleStrategy:', profile.id);
     done(null, profile);
   }
 ));
@@ -80,7 +91,6 @@ app.listen(PORT,function(){
     console.log("Sirviendo puerto 4000");
   
 })
-
 
 app.post('/nuevoUsuario', function(req, res) {
     console.log('Usuario',req.body);
