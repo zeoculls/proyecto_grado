@@ -54,3 +54,20 @@ toastr.options = {
   "hideMethod": "fadeOut"
 }
 
+
+
+angular.module('recadoMania').controller('loginUsuario',['$scope', 'servicioSrvc', '$window', function($scope, servicioSrvc, $window) {
+
+    console.log('hola!!');
+
+    $scope.login = {
+       nombre: "oferta",   
+       fotoAvatar: "pruba.html"
+    };
+
+    console.log('loginUsuario:', login);
+})
+
+
+
+

@@ -51,8 +51,8 @@ passport.use(new GoogleStrategy({
 
 console.log('process.env.DATABASE_URL',process.env.DATABASE_URL);
 
-//postgres://acrrjblbhykwfe:_X9x_X1PudqZVLkPrYPOdowl9c@ec2-107-20-152-139.compute-1.amazonaws.com:5432/ddh92n17nf7m9p
-//Pass: _X9x_X1PudqZVLkPrYPOdowl9c
+
+
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -294,7 +294,10 @@ app.get('/cargarDB', function(req, res) {
     res.end("<h1>Base de datos Cargada</h1>");
 })
 
-
+//git add --a
+/////git remote add origin https://github.com/zeoculls/proyecto_grado.git
+//git commit -m 'problema' 
+//git push -u origin master
 
 
 

@@ -49,10 +49,10 @@
 
     
 
-
-   <div>
-  <md-grid-list
-        md-cols-sm="1" md-cols-md="2" md-cols-gt-md="5"
+<!-- viejo -->
+<!--    <div>
+ -->  <md-grid-list
+        md-cols-sm="1" md-cols-md="2" md-cols-gt-md="3"
         md-row-height-gt-md="1:1" md-row-height="2:2"
         md-gutter="12px" md-gutter-gt-sm="8px" >
     <md-grid-tile ng-repeat="servicio in servicios"
@@ -60,21 +60,22 @@
        <!--  <p><strong>Fecha creado: </strong></p> -->
        <div layout="column" layout-margin layout-align="start start">
           <md-grid-tile-header>
-              <h3>{{servicio.titulo}}</h3>
+              <h3> <a href="#/detalle/{{servicio.id}}"> {{servicio.titulo}}</a></h3>
           </md-grid-tile-header>
 
           <p><strong>Descripción: </strong></p>
           <p> {{servicio.descripcion}} </p>
       <!--   <p><strong>Categorias: </strong></p> -->
-          <p><span class="tags"> {{servicio.categoria}} </span></p>
-          </div>
+                <p><strong> {{servicio.precio}} € </strong></p>
+                <p><span class="tags"> <strong>{{servicio.categoria}}</strong></span></p>
+              </div>
           <md-grid-tile-footer>
               <h3>Publicado: {{servicio.updatedAt | date:'mediumDate'}}</h3>
           </md-grid-tile-footer>
     </md-grid-tile>
   </md-grid-list>
-</div>
-
+<!-- </div>
+ -->
 
 
 
