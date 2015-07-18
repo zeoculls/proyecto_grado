@@ -3,11 +3,11 @@ var bodyParser = require("body-parser");
 var Sequelize = require('sequelize');
 var path = require('path');
 var app = express();
-var passport = require('passport');
 var session = require('express-session');
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;  
 var cookieParser = require('cookie-parser');
-
+var logger = require('morgan');
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;  
 var auth = require('./public/routes/auth.js');
 var users = require('./public/routes/users.js');
 
@@ -17,16 +17,14 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/public/partials');
 app.use(express.static(path.join(__dirname + '/public')));
 app.use(bodyParser.json());
+app.use(logger('dev'));
+app.use(cookieParser('secret'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({ secret: 'secret', 
+                  saveUninitialized: true,
+                  resave: true}));
 app.use(passport.initialize());
 app.use(passport.session());
-//app.use(cookieParser());
-//app.use(express.cookieSession({ secret: 'tobo!', maxAge: 360*5 }));
-
-app.use(session({secret: 'secret', 
-                 saveUninitialized: true,
-                 resave: true}));
-
 app.use('/users',users);
 app.use('/auth',auth);
 
@@ -34,31 +32,61 @@ app.use('/auth',auth);
 // Simple route middleware to ensure user is authenticated.
 
 passport.serializeUser(function(user, done){
-    console.log('SEIRALIZE USER', user.id);
-//    console.log('id:', user.id);    
-    return done(null, user.id);
+    console.log('SEIRALIZE USER', user.id); 
+    done(null, user);
 });
 
 passport.deserializeUser(function(user ,done){
     console.log('DESEIRALIZE USER!:', user.id);
-    done(null, user.id);
+
+    //User.findById(user.id, function(err, user) {
+       done(null, user); 
+    //});
+
+
 });
 
 passport.use(new GoogleStrategy({
   clientID: '514182895063-jmjal17a7d5dgth23tof34t06sq4aohf.apps.googleusercontent.com',
   clientSecret: 'SQygJWZKcgnJ1cyD0M_cAliJ',
-  returnURL: 'http://127.0.0.1:4000/auth/google/callback',
   callbackURL: 'http://localhost:4000/auth/google/callback',
   },
-  function(req, accessToken, refreshToken, profile, done) {
+  function(req, accessToken, refreshToken, profile, done) { 
+    
     console.log('GoogleStrategy:', profile.id);
-    done(null, profile);
-  }
-));
-
-
-
-
+    Usuario.findOne({where: {id: profile.id} })
+      .then(function(user){
+         if(!user)
+          return done(null, false, {message: "El usuario no existe"});
+        else {
+          // if everything is OK, return null as the error
+          // and the authenticated user
+          console.log('Usuario ya registrado en la base de datos');
+          var user = {
+            usuario: profile.displayName, 
+            nombre: profile.name.givenName, 
+            apellidos: profile.name.familyName, 
+            fotoAvatar: profile._json.image.url, 
+            email: profile.emails[0].value,
+            provider:  profile.provider,
+            id: profile.id            
+          }
+          done(null, user);
+          }
+      })
+      .error(function(err){
+        console.log('Usuario NO encontrado, SE CREA');
+        Usuario.create({ 
+            usuario: profile.displayName, 
+            nombre: profile.name.givenName, 
+            apellidos: profile.name.familyName, 
+            fotoAvatar: profile._json.image.url, 
+            email: profile.emails[0].value,
+            provider:  profile.provider,
+            id: profile.id
+        });
+      });
+}));    
 
 console.log('process.env.DATABASE_URL',process.env.DATABASE_URL);
 
@@ -156,7 +184,12 @@ app.post('/save', function(req, res) {
 
 app.get('/servicios', function(req, res) {
     Servicio.findAll().then(function(servicios){
-        res.send(servicios)
+        if(!req.user)
+          res.send(servicios)
+        else {
+          console.log(req.user);
+          res.send(servicios,req.user);
+        }
     })
 })
 
@@ -202,6 +235,8 @@ var Usuario = sequelize.define('usuario', {
   fechaNacimiento: { type: Sequelize.DATE, field: 'fechaNacimiento' },
   email: { type: Sequelize.STRING, field: 'email'},
   contacto: { type: Sequelize.STRING, field: 'contacto'},
+  provider: { type: Sequelize.STRING, field: 'provider'},
+  id: { type: Sequelize.STRING, field: 'id'},
   fotoAvatar: { type: Sequelize.STRING, field: 'fotoAvatar'},
 }, {
   freezeTableName: true 

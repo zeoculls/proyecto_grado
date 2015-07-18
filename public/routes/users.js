@@ -3,30 +3,31 @@ var router = express.Router();
 
 
 
+
+router.use('/', function(req,res,next){
+  if(!req.user){
+    res.redirect('/');
+  }
+  next();
+})
+
 router.get('/', function(req,res){ 
-		console.log(req.user);
-	console.log('User req.profile:',req.session.passport);
-	if (!req.user) {
+  if (!req.user) {
       // Not logged-in. Authenticate based on Google account.
-      console.log('users.js KO');
+      console.log('Usuario no logueado KO');
 
     } else {
       // Logged in. Associate Twitter account with user.  Preserve the login
       // state by supplying the existing user after association.
       // return done(null, req.user);
-      	console.log('users.js logueado ok');
-		console.log(req.user);
-    }
-    res.end;
-	//var usuario = { 
-    //  nombre: req.user.displayName, 
-    //  fotoAvatar: req.user._json.image.url
-    // };
-    //res.end("<h1>Loqueado oK</h1>");
-	//res.render('login', {nombre: req.user.displayName,
-	//					 imagen: req.user._json.image.url});
-	//res.send(usuario);
-	//console.log('usuario');
+      	console.log('User logueado ok');
+        console.log('Nombre:',req.user.usuario);
+        console.log('Avatar:',req.user.fotoAvatar);
+        //res.render('login', { user: { nombre: req.user.usuario,
+        //    fotoAvatar: req.user.fotoAvatar}});
+        res.redirect('/');
+
+    };
 
 })
 

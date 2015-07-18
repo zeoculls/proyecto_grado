@@ -54,20 +54,24 @@ toastr.options = {
   "hideMethod": "fadeOut"
 }
 
+angular.module('recadoMania').controller('loginCtrl',['$scope', 'usuarioSrvc', '$window', function($scope, usuarioSrvc, $window) {
 
 
-angular.module('recadoMania').controller('loginUsuario',['$scope', 'servicioSrvc', '$window', function($scope, servicioSrvc, $window) {
+$(".email-signup").hide();
+$("#signup-box-link").click(function(){
+  $(".email-login").fadeOut(100);
+  $(".email-signup").delay(100).fadeIn(100);
+  $("#login-box-link").removeClass("active");
+  $("#signup-box-link").addClass("active");
+});
+$("#login-box-link").click(function(){
+  $(".email-login").delay(100).fadeIn(100);;
+  $(".email-signup").fadeOut(100);
+  $("#login-box-link").addClass("active");
+  $("#signup-box-link").removeClass("active");
+});
 
-    console.log('hola!!');
-
-    $scope.login = {
-       nombre: "oferta",   
-       fotoAvatar: "pruba.html"
-    };
-
-    console.log('loginUsuario:', login);
-})
-
+}])
 
 
 
