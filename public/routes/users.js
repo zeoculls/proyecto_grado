@@ -25,7 +25,8 @@ router.get('/', function(req,res){
         console.log('Avatar:',req.user.fotoAvatar);
         //res.render('login', { user: { nombre: req.user.usuario,
         //    fotoAvatar: req.user.fotoAvatar}});
-        res.redirect('/');
+        res.send(req.user);
+        //res.redirect('/');
 
     };
 

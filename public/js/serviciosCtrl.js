@@ -3,8 +3,6 @@ angular.module('recadoMania').controller('serviciosCtrl',['$scope', 'servicioSrv
     .then(function(servicios) {
         console.log('Recupera servicios',servicios)
         $scope.servicios = servicios;
-        if(!user)
-            $scope.user=user;
     })
 }])
 
