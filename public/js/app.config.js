@@ -33,7 +33,6 @@ angular.module('recadoMania').config(["$routeProvider", function($routeProvider)
     .when('/login', {
         templateUrl: 'partials/login.html',
         controller: 'loginCtrl'
-
     })
 
     .otherwise({

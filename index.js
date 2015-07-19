@@ -8,6 +8,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;  
+var LocalStrategy = require('passport-local').Strategy;
+
 var auth = require('./public/routes/auth.js');
 var users = require('./public/routes/users.js');
 
@@ -46,6 +48,18 @@ passport.deserializeUser(function(user ,done){
 
 });
 
+//Me falta implementar el login LOCAL
+// passport.use(new LocalStrategy(
+//   function(username, password, done) {
+//     User.findOne({ username: username }, function (err, user) {
+//        User.findOne({where: {id: profile.id} })
+//         .then(function(user){
+
+//     });
+//   }
+// ));
+
+
 passport.use(new GoogleStrategy({
   clientID: '514182895063-jmjal17a7d5dgth23tof34t06sq4aohf.apps.googleusercontent.com',
   clientSecret: 'SQygJWZKcgnJ1cyD0M_cAliJ',
@@ -56,9 +70,28 @@ passport.use(new GoogleStrategy({
     console.log('GoogleStrategy:', profile.id);
     Usuario.findOne({where: {id: profile.id} })
       .then(function(user){
-         if(!user)
-          return done(null, false, {message: "El usuario no existe"});
-        else {
+         if(!user) {
+          console.log('Usuario NO encontrado, SE CREA');
+          Usuario.create({ 
+            usuario: profile.displayName, 
+            nombre: profile.name.givenName, 
+            apellidos: profile.name.familyName, 
+            fotoAvatar: profile._json.image.url, 
+            email: profile.emails[0].value,
+            provider:  profile.provider,
+            id: profile.id
+          });
+          var user = {
+            usuario: profile.displayName, 
+            nombre: profile.name.givenName, 
+            apellidos: profile.name.familyName, 
+            fotoAvatar: profile._json.image.url, 
+            email: profile.emails[0].value,
+            provider:  profile.provider,
+            id: profile.id            
+          }
+          done(null, user);
+        } else {
           // if everything is OK, return null as the error
           // and the authenticated user
           console.log('Usuario ya registrado en la base de datos');
@@ -74,23 +107,34 @@ passport.use(new GoogleStrategy({
           done(null, user);
           }
       })
-      .error(function(err){
-        console.log('Usuario NO encontrado, SE CREA');
-        Usuario.create({ 
-            usuario: profile.displayName, 
-            nombre: profile.name.givenName, 
-            apellidos: profile.name.familyName, 
-            fotoAvatar: profile._json.image.url, 
-            email: profile.emails[0].value,
-            provider:  profile.provider,
-            id: profile.id
-        });
-      });
+      // .error(function(err){
+      //   console.log('Usuario NO encontrado, SE CREA');
+      //   Usuario.create({ 
+      //       usuario: profile.displayName, 
+      //       nombre: profile.name.givenName, 
+      //       apellidos: profile.name.familyName, 
+      //       fotoAvatar: profile._json.image.url, 
+      //       email: profile.emails[0].value,
+      //       provider:  profile.provider,
+      //       id: profile.id
+      //   });
+      // });
 }));    
 
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (!user.verifyPassword(password)) { return done(null, false); }
+      return done(null, user);
+    });
+  }
+));
+
+
 console.log('process.env.DATABASE_URL',process.env.DATABASE_URL);
-
-
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -130,6 +174,7 @@ app.post('/nuevoUsuario', function(req, res) {
       codigoPostal: req.body.codigoPostal, 
       fechaNacimiento: req.body.fechaNacimiento, 
       email: req.body.email, 
+      contraseña: req.body.contraseña,
       contacto: req.body.contacto
       })
 })
@@ -184,12 +229,7 @@ app.post('/save', function(req, res) {
 
 app.get('/servicios', function(req, res) {
     Servicio.findAll().then(function(servicios){
-        if(!req.user)
-          res.send(servicios)
-        else {
-          console.log(req.user);
-          res.send(servicios,req.user);
-        }
+      res.send(servicios)
     })
 })
 
@@ -200,12 +240,6 @@ app.post('/servicioId', function(req, res) {
             where: { id: req.body.id }})   
     .then(function(servicio){
         res.send(servicio)
-    })
-})
-
-app.get('/usuarios', function(req, res) {
-  Usuario.findAll().then(function(usuarios){
-       res.send(usuarios)
     })
 })
 
@@ -228,12 +262,13 @@ var Servicio = sequelize.define('servicio', {
 
 var Usuario = sequelize.define('usuario', {
   usuario: { type: Sequelize.STRING, field: 'usuario', primaryKey: true },
+  email: { type: Sequelize.STRING, field: 'email'},
+  contraseña: { type: Sequelize.STRING, field: 'contraseña'},
   nombre: { type: Sequelize.STRING, field: 'nombre' },
   apellidos: { type: Sequelize.STRING, field: 'apellidos' },
   direccion: { type: Sequelize.STRING, field: 'direccion'},
   codigoPostal: { type: Sequelize.INTEGER, field: 'codigoPostal' },
   fechaNacimiento: { type: Sequelize.DATE, field: 'fechaNacimiento' },
-  email: { type: Sequelize.STRING, field: 'email'},
   contacto: { type: Sequelize.STRING, field: 'contacto'},
   provider: { type: Sequelize.STRING, field: 'provider'},
   id: { type: Sequelize.STRING, field: 'id'},

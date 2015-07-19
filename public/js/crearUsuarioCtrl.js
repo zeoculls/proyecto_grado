@@ -71,14 +71,12 @@ $("#login-box-link").click(function(){
   $("#signup-box-link").removeClass("active");
 });
 
-
-usuarioSrvc.loginUsuario()
-      .then(function(usuario) {
-        $scope.usuario = usuario
-})
-
     console.log('controller login usuario!!!!! :',$scope.usuario);
 
+    // usuarioSrvc.loginUsuario()
+    //       .then(function(usuario) {
+    //         $scope.usuario = usuario
+    // })
 
 
 }])

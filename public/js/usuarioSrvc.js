@@ -16,19 +16,19 @@ angular.module('recadoMania').factory('usuarioSrvc',['$http', '$q', 'API_URL', f
                     });
                 return deferred.promise;
 
-        },
-        loginUsuario: function(usuario) {
-            var deferred = $q.defer();
-            console.log('Usuario Login hace un GET de:', usuario)
-            $http({method: 'GET', url: googleURL, data: usuario})
-                    .success(function(response) {
-                        deferred.resolve(response);
-                    })
-                    .error(function(response, status) {
-                        deferred.reject(response, status);
-                    });
-                return deferred.promise;
         }
+        // loginUsuario: function(usuario) {
+        //     var deferred = $q.defer();
+        //     console.log('Usuario Login hace un GET de:', usuario)
+        //     $http({method: 'GET', url: googleURL, data: usuario})
+        //             .success(function(response) {
+        //                 deferred.resolve(response);
+        //             })
+        //             .error(function(response, status) {
+        //                 deferred.reject(response, status);
+        //             });
+        //         return deferred.promise;
+        // }
     }
 }])
 
